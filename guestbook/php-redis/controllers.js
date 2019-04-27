@@ -24,6 +24,7 @@ redisApp.controller('RedisCtrl', function ($scope, $http, $location) {
         $scope.controller.http_.get("guestbook.php?cmd=get&key=messages")
             .success(function(data) {
                 console.log(data);
-                $scope.messages = data.data.split(",");
+                console.log("------");
+                // $scope.messages = data.data.split(",");
             });
 });

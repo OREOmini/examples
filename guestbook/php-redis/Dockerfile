@@ -12,11 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM php:5-apache
+FROM php:7-apache
 
 RUN apt-get update
+RUN apt-get install -y git
+RUN apt-get install zip unzip
 RUN pear channel-discover pear.nrk.io
 RUN pear install nrk/Predis
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# RUN apt-get install -y --no-install-recommends git zip
+# RUN curl --silent --show-error https://getcomposer.org/installer | php
+
+COPY composer.json /var/www/html/
+# COPY ./vendor /var/www/html/
+
+ENV COMPOSER_HOME /root/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+ENV PATH $COMPOSER_HOME/vendor/bin:$PATH
+
+# RUN rm composer.lock
+
+RUN composer install --no-interaction --prefer-dist
+RUN composer update
+# RUN composer require opentracing/opentracing
+# RUN composer require jukylin/jaeger-php
+
 
 # If the container's stdio is connected to systemd-journald,
 # /proc/self/fd/{1,2} are Unix sockets and apache will not be able to open()
@@ -27,4 +48,5 @@ RUN sed -i 's#CustomLog /proc/self/fd/1 combined#CustomLog "|/bin/cat" combined#
 
 ADD guestbook.php /var/www/html/guestbook.php
 ADD controllers.js /var/www/html/controllers.js
-ADD index.html /var/www/html/index.html
+# ADD index.html /var/www/html/index.html
+# ADD ./vendor /var/www/html/

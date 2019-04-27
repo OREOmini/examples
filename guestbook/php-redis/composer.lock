@@ -1,0 +1,143 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "6b2362a7252f14b582d52c9525403913",
+    "packages": [
+        {
+            "name": "jukylin/jaeger-php",
+            "version": "v2.0.5-beta",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jukylin/jaeger-php.git",
+                "reference": "b31a98b908c427836012dc86fe35568d0e605fa7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jukylin/jaeger-php/zipball/b31a98b908c427836012dc86fe35568d0e605fa7",
+                "reference": "b31a98b908c427836012dc86fe35568d0e605fa7",
+                "shasum": ""
+            },
+            "require": {
+                "opentracing/opentracing": "1.0.0-beta2",
+                "packaged/thrift": "0.10.0",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jaeger\\": "src\\Jaeger"
+                },
+                "files": [
+                    "src/Jaeger/Constants.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jukylin",
+                    "email": "742161455@qq.com"
+                }
+            ],
+            "description": "php client for jaeger",
+            "keywords": [
+                "jaeger",
+                "opentracing",
+                "trace"
+            ],
+            "time": "2019-03-21T14:53:02+00:00"
+        },
+        {
+            "name": "opentracing/opentracing",
+            "version": "1.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opentracing/opentracing-php.git",
+                "reference": "ef331f2658df33e46d951316bcc80539ace005fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opentracing/opentracing-php/zipball/ef331f2658df33e46d951316bcc80539ace005fb",
+                "reference": "ef331f2658df33e46d951316bcc80539ace005fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6||^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.7.19",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenTracing\\": "./src/OpenTracing/"
+                },
+                "files": [
+                    "./src/OpenTracing/Ext/Tags.php",
+                    "./src/OpenTracing/Formats.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "José Carlos Chávez",
+                    "email": "jcchavezs@gmail.com"
+                }
+            ],
+            "description": "OpenTracing API for PHP",
+            "time": "2017-11-15T07:59:22+00:00"
+        },
+        {
+            "name": "packaged/thrift",
+            "version": "0.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/packaged/thrift.git",
+                "reference": "8af3f4c0388319f65a2522844d80d8ded60d211b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/packaged/thrift/zipball/8af3f4c0388319f65a2522844d80d8ded60d211b",
+                "reference": "8af3f4c0388319f65a2522844d80d8ded60d211b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Thrift\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Apache Thrift",
+            "homepage": "http://thrift.apache.org/",
+            "keywords": [
+                "apache",
+                "thrift"
+            ],
+            "time": "2017-06-05T07:52:51+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
