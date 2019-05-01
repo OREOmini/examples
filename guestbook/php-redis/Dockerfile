@@ -20,6 +20,9 @@ RUN apt-get install zip unzip
 RUN pear channel-discover pear.nrk.io
 RUN pear install nrk/Predis
 
+# enable PHP socket 
+RUN docker-php-ext-install sockets
+
 COPY composer.json /var/www/html/
 # COPY ./vendor /var/www/html/
 
@@ -40,5 +43,5 @@ RUN sed -i 's#CustomLog /proc/self/fd/1 combined#CustomLog "|/bin/cat" combined#
 
 ADD guestbook.php /var/www/html/guestbook.php
 ADD controllers.js /var/www/html/controllers.js
-# ADD index.html /var/www/html/index.html
+ADD index.html /var/www/html/index.html
 # ADD ./vendor /var/www/html/
