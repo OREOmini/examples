@@ -23,24 +23,36 @@ $serverSpan->addBaggageItem("version", "1.8.9");
 $tracer->inject($serverSpan->getContext(), Formats\TEXT_MAP, $_SERVER);
 //init server span end
 
+$clientTrace = $config->initTrace('redis');
 
 if (isset($_GET['cmd']) === true) {
   $host = 'redis-master';
   if (getenv('GET_HOSTS_FROM') == 'env') {
     $host = getenv('REDIS_MASTER_SERVICE_HOST');
   }
-  // header('Content-Type: application/json');
-  // header("my-trace-id".$trace_id);
 
   // when get the message
   if ($_GET['cmd'] == 'set') {
+    // init injection for redis-master service
+    $injectTarget2 = [];
+    $clientSpan2 = $clientTrace->startSpan($host, ['child_of' => $spanContext]);
+    $clientTrace->inject($clientSpan2->spanContext, Formats\TEXT_MAP, $injectTarget2);
+
     $client = new Predis\Client([
       'scheme' => 'tcp',
       'host'   => $host,
       'port'   => 6379,
     ]);
-
+    foreach ($injectTarget2 as $k => $v) {
+      $client->set($k, $v);
+    }
     $client->set($_GET['key'], $_GET['value']);
+
+    // set tags and logs for the span
+    $url = $host."6379";
+    $clientSpan2->setTags(['http.status_code' => 200, 'http.method' => 'GET', 'http.url' => $url]);
+    $clientSpan2->log(['message' => $host.' '.'GET '. $url .' end !']);
+    $clientSpan2->finish();
     print('{"message": "Updated"}');
   } else {
     $host = 'redis-slave';
@@ -48,12 +60,10 @@ if (isset($_GET['cmd']) === true) {
       $host = getenv('REDIS_SLAVE_SERVICE_HOST');
     }
 
-    $clientTrace = $config->initTrace('redis');
+    // init injection for redis-slave service
     $injectTarget1 = [];
-    $clientSapn1 = $clientTrace->startSpan($host, ['child_of' => $spanContext]);
-    $clientTrace->inject($clientSapn1->spanContext, Formats\TEXT_MAP, $injectTarget1);
-
-    // echo sizeof($injectTarget1);
+    $clientSpan1 = $clientTrace->startSpan($host, ['child_of' => $spanContext]);
+    $clientTrace->inject($clientSpan1->spanContext, Formats\TEXT_MAP, $injectTarget1);
 
     $arr = [];
     $arr['scheme'] = 'tcp';
@@ -62,16 +72,15 @@ if (isset($_GET['cmd']) === true) {
     foreach ($injectTarget1 as $k => $v) {
       $arr[$k] = $v;
     }
-    $url = $host."6379";
-
     $client = new Predis\Client($arr);
-
-    $clientSapn1->setTags(['http.status_code' => 200, 'http.method' => 'GET', 'http.url' => $url]);
-    // $clientSapn1->log(['message' => "HTTP1 ". $method .' '. $url .' end !']);
-    $clientSapn1->finish();
-    //client span1 end
-
     $value = $client->get($_GET['key']);
+
+    // set tags and logs for the span
+    $url = $host."6379";
+    $clientSpan1->setTags(['http.status_code' => 200, 'http.method' => 'GET', 'http.url' => $url]);
+    $clientSpan1->log(['message' => $host.' '.'GET '. $url .' end ! value: '.$value]);
+    $clientSpan1->finish();
+
     print('{"data": "' . $value . '"}');
   }
 } else {
